@@ -1,0 +1,55 @@
+
+provider "aws" {
+  region = var.aws_region
+}
+
+resource "aws_instance" "mastra_instance" {
+  ami           = var.ami_id
+  instance_type = var.instance_type
+  key_name      = var.key_name
+
+  user_data = file("start.sh")
+
+  tags = {
+    Name = "mastra-instance"
+  }
+}
+
+resource "aws_security_group" "mastra_sg" {
+  name        = "mastra_sg"
+  description = "Allow web traffic"
+
+  ingress {
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+output "instance_ip" {
+  value = aws_instance.mastra_instance.public_ip
+}
+
+variable "aws_region" {
+  default = "us-east-1"
+}
+
+variable "ami_id" {
+  description = "Amazon Linux 2 or Ubuntu AMI ID"
+}
+
+variable "instance_type" {
+  default = "t2.micro"
+}
+
+variable "key_name" {
+  description = "SSH key name registered in AWS"
+}

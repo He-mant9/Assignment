@@ -1,0 +1,24 @@
+import os
+import subprocess
+from dotenv import load_dotenv
+
+load_dotenv()
+
+openai_api_key = os.getenv("OPENAI_API_KEY")
+custom_username = os.getenv("CUSTOM_USERNAME", "user")
+
+print(f"Deploying Mastra for user: {custom_username}")
+
+def generate_env():
+    with open(".env", "w") as f:
+        f.write(f"OPENAI_API_KEY={openai_api_key}\n")
+        f.write(f"CUSTOM_USERNAME={custom_username}\n")
+    print("✅ .env file generated.")
+
+def deploy_container():
+    subprocess.run(["docker-compose", "up", "--build", "-d"])
+    print("🚀 Deployment triggered.")
+
+if __name__ == "__main__":
+    generate_env()
+    deploy_container()
