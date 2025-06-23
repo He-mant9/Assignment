@@ -27,7 +27,7 @@ git clone https://github.com/He-mant9/Assignment.git
 cd Assignment
 
 # Copy environment variables
-cp .env.example .env
+docker compouse up -d
 
 # Install dependencies (choose based on your stack)
 npm install
