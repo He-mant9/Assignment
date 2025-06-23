@@ -24,7 +24,7 @@ Brief description of your project.
 ```bash
 # Clone the repository
 git clone https://github.com/He-mant9/Assignment.git
-cd your-repo
+cd Assignment
 
 # Copy environment variables
 cp .env.example .env
